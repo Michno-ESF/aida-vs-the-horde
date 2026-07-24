@@ -21,78 +21,99 @@ let wakeLock = null;
 let lastSummary = null;
 
 /* ---------------- narrator script ---------------- */
-// Each event has several variants so a 30-minute run (7-9 chases) doesn't
-// repeat itself. pick() chooses one at random per call.
+// Deadpan gallows-humor radio operator. Each event has variants so a 30-minute
+// run doesn't repeat itself. These strings are BOTH the fallback TTS text and
+// the exact script the generator voices — keep tools/audio_lines.json in sync.
+// Distances are qualitative on purpose so lines can be pre-recorded; the HUD
+// shows the exact meters.
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
 const LINES = {
   start: n => pick([
-    `Good luck out there, ${n}. The streets look quiet... for now.`,
-    `Radio check, ${n}. Comms are up. Start your warm up — I'll watch the perimeter.`,
-    `Morning, ${n}. Nothing on the scanners yet. Let's keep it that way.`,
+    `Alright, ${n}. Streets are clear, the dead are asleep. Try not to wake them. Off you go.`,
+    `Morning. Statistically, most of them are still where you left them. Enjoy the warm-up while it lasts.`,
+    `Comms are up. I'll be here, narrating your questionable life choices. Start running.`,
   ]),
-  spawn: (n, d) => pick([
-    `${n}! Movement behind you — about ${d.gap} meters back. Hold your pace.`,
-    `Contact. Horde on your tail, ${d.gap} meters. Stay smooth, stay ahead.`,
-    `Heads up, ${n}, they've picked up your scent. ${d.gap} meters and following.`,
+  spawn: n => pick([
+    `Company behind you, ${n}. Not close yet. They seem motivated, though. Pity.`,
+    `Something's noticed you. It's picking up the pace. Rude, really.`,
+    `We've got followers. Nothing urgent. Just, you know, the dead. Keep moving.`,
   ]),
-  ambush: (n, d) => pick([
-    `Ambush! Sprinters, ${d.gap} meters and closing fast! Run, ${n}, RUN!`,
-    `They came out of nowhere — ${d.gap} meters! Go go go, ${n}!`,
-    `Sprinters! Right behind you, ${d.gap} meters! Do not slow down!`,
+  ambush: n => pick([
+    `Oh, that's a lot of them. Sprinters. Right behind you. Do the running thing. Now.`,
+    `Ambush. They skipped the small talk. ${n}, I'd move if I were you.`,
+    `Well, they're fast. That's unfair. Sprint, ${n}, sprint.`,
   ]),
-  gap90: () => pick([`They're gaining. Ninety meters.`, `Gap's closing — ninety meters back.`]),
-  gap60: () => pick([`Sixty meters! Pick it up!`, `They're at sixty. Dig in!`, `Sixty meters and closing — push!`]),
-  gap30: () => pick([`Thirty meters! SPRINT! NOW!`, `Thirty meters — GO, ${settings.name}!`, `They're on you — thirty meters! MOVE!`]),
+  gap90: () => pick([
+    `Ninety meters and gaining. Slowly. Embarrassing for everyone involved.`,
+    `They're closing. Ninety meters. Plenty of time to panic efficiently.`,
+  ]),
+  gap60: () => pick([
+    `Sixty meters. This would be an excellent time to actually try.`,
+    `Sixty meters. I'm not saying hurry, but. Hurry.`,
+  ]),
+  gap30: () => pick([
+    `Thirty meters. I'd run if I were you. I'm not. You are. Run.`,
+    `Thirty meters. They can basically read your race number. Go.`,
+  ]),
   close: () => pick([
-    `They can smell you! Don't look back!`,
-    `That's too close — kick, kick, KICK!`,
-    `You can hear them breathing — GO!`,
+    `That's close enough to smell them. You won't enjoy it. Move.`,
+    `They're practically wearing you as a scarf. Kick.`,
   ]),
   escapeOutran: n => pick([
-    `The gap's opening... you lost them! Beautiful running, ${n}.`,
-    `That's it — they're fading behind you. Textbook escape, ${n}.`,
-    `You're pulling away! They've got nothing left for that pace.`,
+    `And they're gone. Turns out cardio pays off. Who knew. Well run, ${n}.`,
+    `You lost them. Somewhere back there they're deeply disappointed. Beautiful.`,
   ]),
   escapeTired: () => pick([
-    `They're doubling over. Zombies skip leg day. You're clear.`,
-    `And... they've given up. Slumping in the road. Nicely done.`,
-    `They lost the scent. You can breathe — for a minute.`,
+    `They've given up. Slumped in the road, like my expectations. You're clear.`,
+    `And they quit. Dead, and still lazy. Off you go.`,
   ]),
   bitten: (n, d) => pick([
-    `They got a piece of you! ${d.hearts} ${d.hearts === 1 ? 'heart' : 'hearts'} left. Shake it off and move!`,
-    `Ah — they caught you! ${d.hearts} left. Don't stop, ${n}, keep going!`,
+    `Well, that'll leave a mark. You're fine. Probably. ${d.hearts} ${d.hearts === 1 ? 'life' : 'lives'} left. Keep moving.`,
+    `They got a nibble. Rude. Walk it off, ${n} — briskly. Very briskly.`,
   ]),
   overrun: n => pick([
-    `They swarmed you... but ${n} never stops. Get home safe — we'll call it a draw.`,
-    `Overrun. But you're still on your feet, ${n}. Walk it home, head high.`,
+    `That's the horde, then. For what it's worth, you outran my expectations. Stroll home, ${n}.`,
+    `They got you. Anticlimactic, honestly. Head home, hero.`,
   ]),
-  km: (n, d) => pick([
-    `${d.km} ${d.km === 1 ? 'kilometer' : 'kilometers'} down.`,
-    `That's ${d.km} clicks. Looking strong, ${n}.`,
-    `${d.km} kilometers behind you. Keep it rolling.`,
+  km: n => pick([
+    `Another kilometer. The dead are keeping score. So am I.`,
+    `That's another one down. Nobody's impressed. But well done, ${n}.`,
   ]),
   finish: n => pick([
-    `Home safe, ${n}. Pulling up your survival report.`,
-    `You made it, ${n}. Let's see how close it got.`,
+    `Home. Still breathing. Statistically remarkable. Let's see the damage.`,
+    `You made it, ${n}. I had money on the zombies. Pulling up the report.`,
   ]),
 };
+
+// Play a narration clip for `key` if one was generated, else speak the text
+// with the phone's TTS. Shared debounce so nearby events don't talk over
+// each other (priority 3 = urgent, always through; 1 = flavor, easily skipped).
+let lastSpeakAt = 0;
+function speak(key, text, priority = 1) {
+  const t = performance.now() / 1000;
+  if (priority < 2 && t - lastSpeakAt < 10) return;
+  if (priority < 3 && t - lastSpeakAt < 4) return;
+  lastSpeakAt = t;
+  if (!audio.sayClip(key)) narrator.say(text, priority);
+}
 
 function onGameEvent(type, data) {
   const n = settings.name;
   switch (type) {
-    case 'spawn':  audio.sting('spawn');  narrator.say(LINES.spawn(n, data), 2); break;
-    case 'ambush': audio.sting('ambush'); narrator.say(LINES.ambush(n, data), 3); break;
-    case 'gap': { const l = LINES['gap' + data.th]; if (l) narrator.say(l(), data.th <= 30 ? 3 : 2); break; }
-    case 'close':  narrator.say(LINES.close(), 2); break;
+    case 'spawn':  audio.sting('spawn');  speak('spawn', LINES.spawn(n), 2); break;
+    case 'ambush': audio.sting('ambush'); speak('ambush', LINES.ambush(n), 3); break;
+    case 'gap': { const l = LINES['gap' + data.th]; if (l) speak('gap' + data.th, l(), data.th <= 30 ? 3 : 2); break; }
+    case 'close':  speak('close', LINES.close(), 2); break;
     case 'escape':
       audio.sting('escape');
-      narrator.say(data.how === 'tired' ? LINES.escapeTired() : LINES.escapeOutran(n), 2);
+      if (data.how === 'tired') speak('escapeTired', LINES.escapeTired(), 2);
+      else speak('escapeOutran', LINES.escapeOutran(n), 2);
       break;
-    case 'bitten':  audio.sting('bitten');  narrator.say(LINES.bitten(n, data), 3); break;
-    case 'overrun': audio.sting('overrun'); narrator.say(LINES.overrun(n), 3); break;
-    case 'km':      narrator.say(LINES.km(n, data), 1); break;
+    case 'bitten':  audio.sting('bitten');  speak('bitten', LINES.bitten(n, data), 3); break;
+    case 'overrun': audio.sting('overrun'); speak('overrun', LINES.overrun(n), 3); break;
+    case 'km':      speak('km', LINES.km(n), 1); break;
   }
 }
 
@@ -139,6 +160,7 @@ function startRun() {
 
   // Both must happen inside the tap handler for iOS to allow them
   audio.unlock();
+  audio.loadLibrary();          // decode real clips if present (no-op in fallback mode)
   narrator.prime();
 
   tracker.start(
@@ -168,7 +190,7 @@ function startRun() {
   acquireWakeLock();
   showScreen('screen-run');
   renderHUD(game);
-  narrator.say(LINES.start(settings.name), 2);
+  speak('start', LINES.start(settings.name), 2);
 
   lastTick = performance.now();
   tickTimer = setInterval(() => {
@@ -196,7 +218,7 @@ function endRun() {
   if (!game) return;
   lastSummary = buildSummary(game, settings.name, settings.difficulty);
   stopEverything(true);                           // keep speech so the farewell isn't cut off
-  narrator.say(LINES.finish(settings.name), 3);
+  speak('finish', LINES.finish(settings.name), 3);
   const { path, marks, ...compact } = lastSummary;
   addRun({ ...compact });                       // history without the heavy route data
   renderReport(lastSummary);

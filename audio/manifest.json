@@ -1,0 +1,80 @@
+{
+  "sfx": {
+    "groans": [
+      "sfx/groan_1.mp3",
+      "sfx/groan_2.mp3",
+      "sfx/groan_3.mp3",
+      "sfx/groan_4.mp3",
+      "sfx/groan_5.mp3",
+      "sfx/groan_6.mp3",
+      "sfx/groan_7.mp3",
+      "sfx/groan_8.mp3",
+      "sfx/groan_9.mp3",
+      "sfx/groan_10.mp3",
+      "sfx/groan_11.mp3",
+      "sfx/groan_12.mp3",
+      "sfx/groan_13.mp3"
+    ],
+    "ambient": "sfx/ambient.mp3",
+    "bitten": "sfx/bitten.mp3",
+    "ambush": "sfx/ambush.mp3",
+    "overrun": "sfx/overrun.mp3"
+  },
+  "vo": {
+    "start": [
+      "vo/start_1.mp3",
+      "vo/start_2.mp3",
+      "vo/start_3.mp3"
+    ],
+    "spawn": [
+      "vo/spawn_1.mp3",
+      "vo/spawn_2.mp3",
+      "vo/spawn_3.mp3"
+    ],
+    "ambush": [
+      "vo/ambush_1.mp3",
+      "vo/ambush_2.mp3",
+      "vo/ambush_3.mp3"
+    ],
+    "gap90": [
+      "vo/gap90_1.mp3",
+      "vo/gap90_2.mp3"
+    ],
+    "gap60": [
+      "vo/gap60_1.mp3",
+      "vo/gap60_2.mp3"
+    ],
+    "gap30": [
+      "vo/gap30_1.mp3",
+      "vo/gap30_2.mp3"
+    ],
+    "close": [
+      "vo/close_1.mp3",
+      "vo/close_2.mp3"
+    ],
+    "escapeOutran": [
+      "vo/escapeOutran_1.mp3",
+      "vo/escapeOutran_2.mp3"
+    ],
+    "escapeTired": [
+      "vo/escapeTired_1.mp3",
+      "vo/escapeTired_2.mp3"
+    ],
+    "bitten": [
+      "vo/bitten_1.mp3",
+      "vo/bitten_2.mp3"
+    ],
+    "overrun": [
+      "vo/overrun_1.mp3",
+      "vo/overrun_2.mp3"
+    ],
+    "km": [
+      "vo/km_1.mp3",
+      "vo/km_2.mp3"
+    ],
+    "finish": [
+      "vo/finish_1.mp3",
+      "vo/finish_2.mp3"
+    ]
+  }
+}

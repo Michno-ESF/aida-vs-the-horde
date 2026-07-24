@@ -1,0 +1,72 @@
+{
+  "_comment": "Source script for generate_audio.py. Keys under 'vo' MUST match the LINES keys in js/main.js (the app falls back to phone TTS for any key with no clip). Edit freely — reword, add variants, change the name. Distances stay qualitative so lines can be pre-recorded. 'groans' are guttural sounds the app pitches DOWN in the browser to sound like zombies, so keep them low and wordless.",
+  "voice": {
+    "seed": 20240724,
+    "note": "A fixed seed keeps sampling stable but does NOT fix the timbre — pass a reference voice (--voice-ref or --reference-id) so every line is the SAME narrator. Pick a dry, unbothered voice for deadpan delivery."
+  },
+  "vo": {
+    "start": [
+      "Alright, Aida. Streets are clear, the dead are asleep. Try not to wake them. Off you go.",
+      "Morning. Statistically, most of them are still where you left them. Enjoy the warm-up while it lasts.",
+      "Comms are up. I'll be here, narrating your questionable life choices. Start running."
+    ],
+    "spawn": [
+      "Company behind you, Aida. Not close yet. They seem motivated, though. Pity.",
+      "Something's noticed you. It's picking up the pace. Rude, really.",
+      "We've got followers. Nothing urgent. Just, you know, the dead. Keep moving."
+    ],
+    "ambush": [
+      "Oh, that's a lot of them. Sprinters. Right behind you. Do the running thing. Now.",
+      "Ambush. They skipped the small talk. Aida, I'd move if I were you.",
+      "Well, they're fast. That's unfair. Sprint, Aida, sprint."
+    ],
+    "gap90": [
+      "Ninety meters and gaining. Slowly. Embarrassing for everyone involved.",
+      "They're closing. Ninety meters. Plenty of time to panic efficiently."
+    ],
+    "gap60": [
+      "Sixty meters. This would be an excellent time to actually try.",
+      "Sixty meters. I'm not saying hurry, but. Hurry."
+    ],
+    "gap30": [
+      "Thirty meters. I'd run if I were you. I'm not. You are. Run.",
+      "Thirty meters. They can basically read your race number. Go."
+    ],
+    "close": [
+      "That's close enough to smell them. You won't enjoy it. Move.",
+      "They're practically wearing you as a scarf. Kick."
+    ],
+    "escapeOutran": [
+      "And they're gone. Turns out cardio pays off. Who knew. Well run, Aida.",
+      "You lost them. Somewhere back there they're deeply disappointed. Beautiful."
+    ],
+    "escapeTired": [
+      "They've given up. Slumped in the road, like my expectations. You're clear.",
+      "And they quit. Dead, and still lazy. Off you go."
+    ],
+    "bitten": [
+      "Well, that'll leave a mark. You're fine. Probably. Keep moving.",
+      "They got a nibble. Rude. Walk it off, Aida — briskly. Very briskly."
+    ],
+    "overrun": [
+      "That's the horde, then. For what it's worth, you outran my expectations. Stroll home, Aida.",
+      "They got you. Anticlimactic, honestly. Head home, hero."
+    ],
+    "km": [
+      "Another kilometer. The dead are keeping score. So am I.",
+      "That's another one down. Nobody's impressed. But well done, Aida."
+    ],
+    "finish": [
+      "Home. Still breathing. Statistically remarkable. Let's see the damage.",
+      "You made it, Aida. I had money on the zombies. Pulling up the report."
+    ]
+  },
+  "groans": [
+    "Hnnnngh...",
+    "Uuurrrgh... nnnh...",
+    "Rrrrgh... huuuh...",
+    "Nnnngh... aaargh...",
+    "Ghhhh... uuunh...",
+    "Hrrraaah... nnngh..."
+  ]
+}

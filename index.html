@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Aida vs. The Horde</title>
+  <meta name="theme-color" content="#0b0f0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ZombieRun">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main id="app">
+
+  <!-- ============ HOME ============ -->
+  <section id="screen-home" class="screen active">
+    <header class="title">
+      <div class="title-emoji">🧟‍♀️</div>
+      <h1><span id="title-name">AIDA</span><br><small>vs. THE HORDE</small></h1>
+      <p class="tagline">They only chase runners.</p>
+    </header>
+
+    <div class="card">
+      <label class="field">Runner name
+        <input id="set-name" type="text" autocomplete="off" maxlength="20">
+      </label>
+      <label class="field">Horde type
+        <div class="seg" id="set-diff">
+          <button type="button" data-v="casual">🚶 Shamblers</button>
+          <button type="button" data-v="normal">🏃 Runners</button>
+          <button type="button" data-v="hard">⚡ Sprinters</button>
+        </div>
+      </label>
+      <label class="row"><span>🎙 Narrator voice</span><input type="checkbox" id="set-voice"></label>
+      <label class="row"><span>🧪 Demo mode (fake GPS, try indoors)</span><input type="checkbox" id="set-demo"></label>
+    </div>
+
+    <button id="btn-start" class="big go">▶ &nbsp;START RUN</button>
+    <p id="gps-status" class="hint warn hidden"></p>
+
+    <div id="install-hint" class="hint hidden">
+      📲 Install: open in <b>Safari</b> → Share → <b>Add to Home Screen</b> — it becomes a full-screen app.
+    </div>
+
+    <div class="hint">
+      🔔 Flip the <b>silent switch OFF</b> (no orange) so you can hear the zombies — iPhone mutes game sound otherwise.
+    </div>
+
+    <div class="card" id="history-card">
+      <h2>Past escapes</h2>
+      <ul id="history"><li class="hint">No runs yet. The horde is patient.</li></ul>
+    </div>
+
+    <p class="hint small">Keep the screen on while running — iPhone pauses web GPS when locked.
+    The app tries to hold the screen awake, but to be safe set <b>Auto-Lock to Never</b>
+    (Settings › Display &amp; Brightness) before you head out, and don't press the lock button.</p>
+  </section>
+
+  <!-- ============ RUN ============ -->
+  <section id="screen-run" class="screen">
+    <div class="hud-top">
+      <div class="stat"><span id="r-time">0:00</span><label>time</label></div>
+      <div class="stat"><span id="r-dist">0.00</span><label>km</label></div>
+      <div class="stat"><span id="r-pace">–:––</span><label>/km</label></div>
+    </div>
+
+    <div id="threat" class="threat clear">
+      <div id="threat-emoji">🌤</div>
+      <div id="threat-main">All clear</div>
+      <div id="threat-sub">enjoy it while it lasts</div>
+      <div class="bar"><div id="threat-fill"></div></div>
+    </div>
+
+    <div id="hearts" class="hearts">❤️❤️❤️</div>
+
+    <p id="gps-live" class="hint warn hidden"></p>
+
+    <div id="demo-ctl" class="demo hidden">
+      <label>Demo pace: <output id="demo-out">10.0 km/h</output></label>
+      <input type="range" id="demo-speed" min="0" max="18" step="0.5" value="10">
+    </div>
+
+    <div class="hud-actions">
+      <button id="btn-pause" class="big">⏸ Pause</button>
+      <button id="btn-end" class="big danger">■ Hold to finish</button>
+    </div>
+  </section>
+
+  <!-- ============ REPORT ============ -->
+  <section id="screen-report" class="screen">
+    <h1 id="rep-head" class="rep-head"></h1>
+    <canvas id="rep-map" width="660" height="440"></canvas>
+    <div class="grid" id="rep-stats"></div>
+    <button id="btn-copy" class="big">📋 Copy report (paste into Strava)</button>
+    <button id="btn-home" class="big go">Done</button>
+  </section>
+
+</main>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

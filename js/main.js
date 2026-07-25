@@ -492,22 +492,48 @@ $('btn-pause').addEventListener('click', () => {
   }
 });
 
-// Hold-to-finish so a sweaty mid-run tap can't end the game by accident
+// Hold-to-finish so a sweaty mid-run tap can't end the game by accident.
+//
+// Touch needs more care than mouse here. On a phone a long press drifts, and
+// with the default touch-action the browser starts treating that drift as a
+// scroll and fires pointercancel — which silently killed the hold, so the
+// button appeared to do nothing. The fixes: touch-action:none + callout
+// suppression in CSS, pointer capture so finger drift keeps delivering events
+// to the button, and only aborting on a deliberate drag away (not a wobble).
+const HOLD_MS = 1100;
+const HOLD_ABORT_PX = 44;         // drag this far off = "I changed my mind"
 let holdTimer = null;
+let holdOrigin = null;
 const endBtn = $('btn-end');
-const startHold = e => {
-  e.preventDefault();
-  endBtn.classList.add('holding');
-  holdTimer = setTimeout(() => { endBtn.classList.remove('holding'); endRun(); }, 1100);
-};
-const cancelHold = () => {
+
+const HOLD_LABEL = '■ Hold to finish';
+const stopHold = () => {
   endBtn.classList.remove('holding');
+  endBtn.textContent = HOLD_LABEL;
   clearTimeout(holdTimer);
+  holdTimer = null;
+  holdOrigin = null;
 };
-endBtn.addEventListener('pointerdown', startHold);
-endBtn.addEventListener('pointerup', cancelHold);
-endBtn.addEventListener('pointerleave', cancelHold);
-endBtn.addEventListener('pointercancel', cancelHold);
+
+endBtn.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  holdOrigin = { x: e.clientX, y: e.clientY };
+  try { endBtn.setPointerCapture(e.pointerId); } catch { /* not fatal */ }
+  endBtn.classList.add('holding');
+  endBtn.textContent = '■ Keep holding…';    // confirm the gesture registered
+  clearTimeout(holdTimer);
+  holdTimer = setTimeout(() => { stopHold(); endRun(); }, HOLD_MS);
+});
+
+endBtn.addEventListener('pointermove', e => {
+  if (!holdOrigin) return;
+  if (Math.hypot(e.clientX - holdOrigin.x, e.clientY - holdOrigin.y) > HOLD_ABORT_PX) stopHold();
+});
+
+endBtn.addEventListener('pointerup', stopHold);
+endBtn.addEventListener('pointercancel', stopHold);
+// Deliberately NOT pointerleave: with pointer capture it can fire on a tiny
+// wobble and would cancel a hold the runner is still making.
 
 $('demo-speed').addEventListener('input', e => {
   const kmh = Number(e.target.value);

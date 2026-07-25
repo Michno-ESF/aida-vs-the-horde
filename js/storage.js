@@ -9,7 +9,7 @@ function write(key, val) {
 }
 
 export const settings = Object.assign(
-  { name: 'Aida', difficulty: 'normal', voice: true, demo: false },
+  { name: 'Aida', difficulty: 'normal', voice: true, demo: false, voiceId: '', tone: 'sassy' },
   read(S_KEY) || {}
 );
 

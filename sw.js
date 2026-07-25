@@ -1,9 +1,10 @@
 // Network-first, cache-fallback: always fresh when online, still boots offline.
-const CACHE = 'azs-v3';
+const CACHE = 'azs-v5';
 const ASSETS = [
   './', './index.html', './manifest.webmanifest', './css/style.css',
   './js/main.js', './js/game.js', './js/gps.js', './js/audio.js',
   './js/speech.js', './js/ui.js', './js/report.js', './js/storage.js',
+  './js/progression.js',
   './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png',
 ];
 

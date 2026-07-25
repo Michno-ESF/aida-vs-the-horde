@@ -37,8 +37,31 @@
         </div>
       </label>
       <label class="row"><span>🎙 Narrator voice</span><input type="checkbox" id="set-voice"></label>
+
+      <div class="field">
+        <span class="field-label">Choose narrator</span>
+        <div id="set-voicelist" class="voicelist"><!-- JS fills: one .voice-row per voice --></div>
+      </div>
+
+      <label class="field">Narrator tone
+        <div class="seg" id="set-tone">
+          <button type="button" data-v="sassy">😈 Sassy</button>
+          <button type="button" data-v="straight">📻 Straight</button>
+        </div>
+      </label>
+
       <label class="row"><span>🧪 Demo mode (fake GPS, try indoors)</span><input type="checkbox" id="set-demo"></label>
     </div>
+
+    <div id="rank-strip" class="card rank-strip">
+      <div class="rank-strip-top">
+        <span id="rank-name">Rookie</span>
+        <span id="rank-salvage">⚙️ 0</span>
+      </div>
+      <div class="bar"><div id="rank-bar-fill" class="bar-fill"></div></div>
+    </div>
+
+    <button id="btn-loadout" class="big">🎒 LOADOUT</button>
 
     <button id="btn-start" class="big go">▶ &nbsp;START RUN</button>
     <p id="gps-status" class="hint warn hidden"></p>
@@ -91,11 +114,36 @@
     </div>
   </section>
 
+  <!-- ============ LOADOUT ============ -->
+  <section id="screen-loadout" class="screen">
+    <header class="title loadout-head">
+      <div class="title-emoji">🎒</div>
+      <h1><small>YOUR</small><br>LOADOUT</h1>
+      <p class="tagline">Salvage from the horde, gear up for the next run.</p>
+    </header>
+
+    <div class="card rank-strip">
+      <div class="rank-strip-top">
+        <span id="loadout-rank">Rookie</span>
+        <span id="loadout-salvage">⚙️ 0</span>
+      </div>
+      <div class="bar"><div id="loadout-rankbar" class="bar-fill"></div></div>
+    </div>
+
+    <div id="loadout-slots"><!-- JS fills: one .slot per gear slot --></div>
+
+    <button id="btn-loadout-back" class="big go">Done</button>
+  </section>
+
   <!-- ============ REPORT ============ -->
   <section id="screen-report" class="screen">
     <h1 id="rep-head" class="rep-head"></h1>
     <canvas id="rep-map" width="660" height="440"></canvas>
     <div class="grid" id="rep-stats"></div>
+
+    <div id="rep-salvage" class="card salvage-card"><!-- JS fills: salvage line items + total --></div>
+    <div id="rep-rank" class="hint"><!-- JS fills: rank / rank-up note --></div>
+
     <button id="btn-copy" class="big">📋 Copy report (paste into Strava)</button>
     <button id="btn-home" class="big go">Done</button>
   </section>

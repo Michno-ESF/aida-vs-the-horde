@@ -13,6 +13,13 @@ const rand = (a, b) => a + Math.random() * (b - a);
  * Either way the proximity behaviour is identical: heartbeat tempo/volume and
  * groan frequency/volume rise as the gap shrinks. Must be unlocked from a user
  * gesture (iOS): call unlock() in the Start handler.
+ *
+ * Manifest versions: v2 nests narration under { voiceId: { toneId: { key:
+ * [urls] } } } plus a `voices`/`tones` catalog so the Loadout screen can offer
+ * a picker; v1 (still live) is just `{ key: [urls] }`. loadLibrary() decodes
+ * sfx once and swaps ONLY the narration set when the chosen voice/tone
+ * changes, falling back voice -> first available -> v1 flat -> synth/TTS at
+ * every step so a missing or malformed manifest never breaks the run.
  */
 export class AudioEngine {
   constructor() {
@@ -26,8 +33,17 @@ export class AudioEngine {
     this._ambientSrc = null;
     this._ambientGain = null;
     this._voiceSrc = null;
-    this._loaded = false;
     this.lib = { groans: [], ambient: null, stings: {}, vo: {} };
+    // Manifest/voice-loading state, kept separate so a voice/tone switch can
+    // re-decode just the narration set without re-fetching sfx or the manifest.
+    this._manifest = null;
+    this._base = 'audio/';
+    this._sfxLoaded = false;
+    this._voice = null;         // currently loaded voice id (v2 only)
+    this._tone = null;          // currently loaded tone id (v2 only)
+    this._voKey = null;         // cache key for the loaded narration set
+    this._voSeq = 0;            // request counter, so stale loads can't win a race
+    this._previewCache = new Map(); // voiceId -> decoded sample AudioBuffer
   }
 
   async unlock() {
@@ -57,46 +73,131 @@ export class AudioEngine {
   get ok() { return this.ctx && this.ctx.state === 'running'; }
   get hasGroans() { return this.lib.groans.length > 0; }
 
-  /**
-   * Fetch the clip manifest and decode whatever exists. Safe to call once the
-   * context is unlocked. A missing manifest or clip just leaves that category
-   * in synth-fallback mode — never throws.
-   */
-  async loadLibrary(base = 'audio/') {
-    if (this._loaded || !this.ctx) return;
-    this._loaded = true;
-    let manifest;
+  // Voices/tones advertised by the last-loaded manifest, for the Loadout UI.
+  // Empty lists (never throws) if no manifest or a v1 flat one is in play.
+  get catalog() {
+    const m = this._manifest;
+    const voices = (m && Array.isArray(m.voices)) ? m.voices.map((v) => ({ id: v.id, label: v.label || v.id })) : [];
+    const tones = (m && Array.isArray(m.tones)) ? m.tones.map((t) => ({ id: t.id, label: t.label || t.id })) : [];
+    return { voices, tones };
+  }
+
+  async _decode(url, base = this._base) {
     try {
-      const res = await fetch(base + 'manifest.json');
-      if (!res.ok) return;
-      manifest = await res.json();
-    } catch { return; }
+      const r = await fetch(base + url);
+      if (!r.ok) return null;
+      return await this.ctx.decodeAudioData(await r.arrayBuffer());
+    } catch { return null; }
+  }
 
-    const decode = async (url) => {
-      try {
-        const r = await fetch(base + url);
-        if (!r.ok) return null;
-        return await this.ctx.decodeAudioData(await r.arrayBuffer());
-      } catch { return null; }
-    };
-    const decodeList = async (arr) =>
-      (await Promise.all((arr || []).map(decode))).filter(Boolean);
+  async _decodeList(arr, base = this._base) {
+    return (await Promise.all((arr || []).map((u) => this._decode(u, base)))).filter(Boolean);
+  }
 
-    const sfx = manifest.sfx || {};
+  // Fetches (and caches) the manifest exactly once, however many times
+  // loadLibrary/previewVoice ask for it. Never throws — a missing/broken
+  // manifest just leaves everything in synth/TTS fallback.
+  async _ensureManifest(base) {
+    if (this._manifest) return this._manifest;
+    try {
+      // Revalidate the manifest every time: the clip files themselves are
+      // immutable per path and stay cacheable, but a stale manifest silently
+      // hides voices/lines that were added in a later release.
+      const res = await fetch(base + 'manifest.json', { cache: 'no-cache' });
+      if (res.ok) this._manifest = await res.json();
+    } catch { /* stays null -> fallback mode */ }
+    return this._manifest;
+  }
+
+  async _loadSfx(sfx) {
     const [groans, ambient] = await Promise.all([
-      decodeList(sfx.groans),
-      sfx.ambient ? decode(sfx.ambient) : null,
+      this._decodeList(sfx.groans),
+      sfx.ambient ? this._decode(sfx.ambient) : null,
     ]);
     this.lib.groans = groans;
     this.lib.ambient = ambient;
     for (const k of ['spawn', 'ambush', 'escape', 'bitten', 'overrun']) {
-      if (sfx[k]) { const b = await decode(sfx[k]); if (b) this.lib.stings[k] = b; }
+      if (sfx[k]) { const b = await this._decode(sfx[k]); if (b) this.lib.stings[k] = b; }
     }
-    const vo = manifest.vo || {};
-    for (const key of Object.keys(vo)) {
-      const bufs = await decodeList(vo[key]);
-      if (bufs.length) this.lib.vo[key] = bufs;
+  }
+
+  // Picks the clip set for a voice/tone request against either manifest shape.
+  // Falls back requested -> first available at each level; if the v2 shape
+  // turns out to be unusable it falls back to treating `vo` as v1-flat.
+  // Returns { voiceId, toneId, clips } (voiceId/toneId are null for v1 flat).
+  _resolveVoiceMap(manifest, wantVoice, wantTone) {
+    const voRoot = manifest && manifest.vo;
+    if (!voRoot || typeof voRoot !== 'object') return null;
+
+    const isNested = manifest.version === 2 || (Array.isArray(manifest.voices) && manifest.voices.length > 0);
+    if (isNested) {
+      const voiceIds = Object.keys(voRoot);
+      if (voiceIds.length) {
+        const voiceId = (wantVoice && voRoot[wantVoice]) ? wantVoice : voiceIds[0];
+        const toneMap = voRoot[voiceId];
+        if (toneMap && typeof toneMap === 'object') {
+          const toneIds = Object.keys(toneMap);
+          if (toneIds.length) {
+            const toneId = (wantTone && toneMap[wantTone]) ? wantTone : toneIds[0];
+            const clips = toneMap[toneId];
+            if (clips && typeof clips === 'object') return { voiceId, toneId, clips };
+          }
+        }
+      }
+      // Nested shape advertised but empty/malformed — fall through to flat.
     }
+    return { voiceId: null, toneId: null, clips: voRoot };
+  }
+
+  // Decodes the narration set for `sel = {voice, tone}` and swaps it in,
+  // releasing the previously loaded buffers. Skips the work entirely if the
+  // resolved voice/tone is already the one loaded.
+  async _loadVoiceSet(sel) {
+    const resolved = this._manifest ? this._resolveVoiceMap(this._manifest, sel.voice, sel.tone) : null;
+    if (!resolved) {
+      this.lib.vo = {};
+      this._voice = this._tone = this._voKey = null;
+      return;
+    }
+    const key = resolved.voiceId ? `${resolved.voiceId}::${resolved.toneId}` : 'flat';
+    if (key === this._voKey) return; // already the loaded set
+
+    // Decoding ~17 clips takes a while, and a user auditioning voices can tap
+    // several in a row. Stamp this request so a slower earlier load can't land
+    // after a later one and silently leave the wrong voice playing.
+    const token = ++this._voSeq;
+    const nextVo = {};
+    const clips = resolved.clips || {};
+    for (const k of Object.keys(clips)) {
+      const arr = clips[k];
+      if (!Array.isArray(arr) || !arr.length) continue; // ignore malformed entries, never throw
+      const bufs = await this._decodeList(arr);
+      if (token !== this._voSeq) return;                // superseded — discard
+      if (bufs.length) nextVo[k] = bufs;
+    }
+    if (token !== this._voSeq) return;
+    this.lib.vo = nextVo;          // old buffers are dropped here (GC-eligible)
+    this._voice = resolved.voiceId;
+    this._tone = resolved.toneId;
+    this._voKey = key;
+  }
+
+  /**
+   * Fetch the clip manifest (once) and decode sfx (once), then load ONLY the
+   * requested voice/tone narration set. Safe to call repeatedly — with a new
+   * `sel` it swaps the narration set without re-touching sfx; with the same
+   * `sel` it's a no-op. Never throws; anything missing just stays in
+   * synth/TTS fallback mode.
+   */
+  async loadLibrary(base = 'audio/', sel = {}) {
+    if (!this.ctx) return;
+    this._base = base;
+    const manifest = await this._ensureManifest(base);
+    if (manifest && !this._sfxLoaded) {
+      this._sfxLoaded = true;
+      await this._loadSfx(manifest.sfx || {});
+    }
+    await this._loadVoiceSet(sel);
   }
 
   /* ---------------- per-tick proximity audio ---------------- */
@@ -175,6 +276,36 @@ export class AudioEngine {
     src.start();
     this._voiceSrc = src;
     return true;
+  }
+
+  /**
+   * Fetch+decode a voice's small 'sample' clip and play it immediately, so
+   * the user can audition it on the Loadout screen. Decoded samples are
+   * cached (by voiceId) so repeat taps are instant. Returns false if the
+   * voice/sample can't be found — never throws.
+   */
+  async previewVoice(voiceId, base = 'audio/') {
+    if (!this.ok) return false;
+    try {
+      let buf = this._previewCache.get(voiceId);
+      if (!buf) {
+        const manifest = await this._ensureManifest(base);
+        const voices = (manifest && manifest.voices) || [];
+        const v = voices.find((x) => x.id === voiceId);
+        if (!v || !v.sample) return false;
+        buf = await this._decode(v.sample, base);
+        if (!buf) return false;
+        this._previewCache.set(voiceId, buf);
+      }
+      try { this._voiceSrc && this._voiceSrc.stop(); } catch { /* already ended */ }
+      const src = this.ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(this.voiceBus);
+      this._duck(buf.duration);        // same ducking as normal narration
+      src.start();
+      this._voiceSrc = src;
+      return true;
+    } catch { return false; }
   }
 
   // Pull the SFX bed down while narration plays, then bring it back.

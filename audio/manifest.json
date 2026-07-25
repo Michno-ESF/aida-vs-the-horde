@@ -21,60 +21,713 @@
     "overrun": "sfx/overrun.mp3"
   },
   "vo": {
-    "start": [
-      "vo/start_1.mp3",
-      "vo/start_2.mp3",
-      "vo/start_3.mp3"
-    ],
-    "spawn": [
-      "vo/spawn_1.mp3",
-      "vo/spawn_2.mp3",
-      "vo/spawn_3.mp3"
-    ],
-    "ambush": [
-      "vo/ambush_1.mp3",
-      "vo/ambush_2.mp3",
-      "vo/ambush_3.mp3"
-    ],
-    "gap90": [
-      "vo/gap90_1.mp3",
-      "vo/gap90_2.mp3"
-    ],
-    "gap60": [
-      "vo/gap60_1.mp3",
-      "vo/gap60_2.mp3"
-    ],
-    "gap30": [
-      "vo/gap30_1.mp3",
-      "vo/gap30_2.mp3"
-    ],
-    "close": [
-      "vo/close_1.mp3",
-      "vo/close_2.mp3"
-    ],
-    "escapeOutran": [
-      "vo/escapeOutran_1.mp3",
-      "vo/escapeOutran_2.mp3"
-    ],
-    "escapeTired": [
-      "vo/escapeTired_1.mp3",
-      "vo/escapeTired_2.mp3"
-    ],
-    "bitten": [
-      "vo/bitten_1.mp3",
-      "vo/bitten_2.mp3"
-    ],
-    "overrun": [
-      "vo/overrun_1.mp3",
-      "vo/overrun_2.mp3"
-    ],
-    "km": [
-      "vo/km_1.mp3",
-      "vo/km_2.mp3"
-    ],
-    "finish": [
-      "vo/finish_1.mp3",
-      "vo/finish_2.mp3"
-    ]
-  }
+    "v1": {
+      "sassy": {
+        "start": [
+          "vo/v1/sassy/start_1.mp3",
+          "vo/v1/sassy/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v1/sassy/spawn_1.mp3",
+          "vo/v1/sassy/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v1/sassy/ambush_1.mp3",
+          "vo/v1/sassy/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v1/sassy/gap90_1.mp3",
+          "vo/v1/sassy/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v1/sassy/gap60_1.mp3",
+          "vo/v1/sassy/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v1/sassy/gap30_1.mp3",
+          "vo/v1/sassy/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v1/sassy/close_1.mp3",
+          "vo/v1/sassy/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v1/sassy/escapeOutran_1.mp3",
+          "vo/v1/sassy/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v1/sassy/escapeTired_1.mp3",
+          "vo/v1/sassy/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v1/sassy/bitten_1.mp3",
+          "vo/v1/sassy/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v1/sassy/overrun_1.mp3",
+          "vo/v1/sassy/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v1/sassy/km_1.mp3",
+          "vo/v1/sassy/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v1/sassy/finish_1.mp3",
+          "vo/v1/sassy/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v1/sassy/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v1/sassy/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v1/sassy/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v1/sassy/rankUp_1.mp3"
+        ]
+      },
+      "straight": {
+        "start": [
+          "vo/v1/straight/start_1.mp3",
+          "vo/v1/straight/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v1/straight/spawn_1.mp3",
+          "vo/v1/straight/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v1/straight/ambush_1.mp3",
+          "vo/v1/straight/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v1/straight/gap90_1.mp3",
+          "vo/v1/straight/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v1/straight/gap60_1.mp3",
+          "vo/v1/straight/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v1/straight/gap30_1.mp3",
+          "vo/v1/straight/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v1/straight/close_1.mp3",
+          "vo/v1/straight/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v1/straight/escapeOutran_1.mp3",
+          "vo/v1/straight/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v1/straight/escapeTired_1.mp3",
+          "vo/v1/straight/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v1/straight/bitten_1.mp3",
+          "vo/v1/straight/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v1/straight/overrun_1.mp3",
+          "vo/v1/straight/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v1/straight/km_1.mp3",
+          "vo/v1/straight/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v1/straight/finish_1.mp3",
+          "vo/v1/straight/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v1/straight/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v1/straight/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v1/straight/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v1/straight/rankUp_1.mp3"
+        ]
+      }
+    },
+    "v2": {
+      "sassy": {
+        "start": [
+          "vo/v2/sassy/start_1.mp3",
+          "vo/v2/sassy/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v2/sassy/spawn_1.mp3",
+          "vo/v2/sassy/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v2/sassy/ambush_1.mp3",
+          "vo/v2/sassy/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v2/sassy/gap90_1.mp3",
+          "vo/v2/sassy/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v2/sassy/gap60_1.mp3",
+          "vo/v2/sassy/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v2/sassy/gap30_1.mp3",
+          "vo/v2/sassy/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v2/sassy/close_1.mp3",
+          "vo/v2/sassy/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v2/sassy/escapeOutran_1.mp3",
+          "vo/v2/sassy/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v2/sassy/escapeTired_1.mp3",
+          "vo/v2/sassy/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v2/sassy/bitten_1.mp3",
+          "vo/v2/sassy/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v2/sassy/overrun_1.mp3",
+          "vo/v2/sassy/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v2/sassy/km_1.mp3",
+          "vo/v2/sassy/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v2/sassy/finish_1.mp3",
+          "vo/v2/sassy/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v2/sassy/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v2/sassy/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v2/sassy/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v2/sassy/rankUp_1.mp3"
+        ]
+      },
+      "straight": {
+        "start": [
+          "vo/v2/straight/start_1.mp3",
+          "vo/v2/straight/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v2/straight/spawn_1.mp3",
+          "vo/v2/straight/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v2/straight/ambush_1.mp3",
+          "vo/v2/straight/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v2/straight/gap90_1.mp3",
+          "vo/v2/straight/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v2/straight/gap60_1.mp3",
+          "vo/v2/straight/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v2/straight/gap30_1.mp3",
+          "vo/v2/straight/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v2/straight/close_1.mp3",
+          "vo/v2/straight/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v2/straight/escapeOutran_1.mp3",
+          "vo/v2/straight/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v2/straight/escapeTired_1.mp3",
+          "vo/v2/straight/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v2/straight/bitten_1.mp3",
+          "vo/v2/straight/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v2/straight/overrun_1.mp3",
+          "vo/v2/straight/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v2/straight/km_1.mp3",
+          "vo/v2/straight/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v2/straight/finish_1.mp3",
+          "vo/v2/straight/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v2/straight/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v2/straight/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v2/straight/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v2/straight/rankUp_1.mp3"
+        ]
+      }
+    },
+    "v3": {
+      "sassy": {
+        "start": [
+          "vo/v3/sassy/start_1.mp3",
+          "vo/v3/sassy/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v3/sassy/spawn_1.mp3",
+          "vo/v3/sassy/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v3/sassy/ambush_1.mp3",
+          "vo/v3/sassy/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v3/sassy/gap90_1.mp3",
+          "vo/v3/sassy/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v3/sassy/gap60_1.mp3",
+          "vo/v3/sassy/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v3/sassy/gap30_1.mp3",
+          "vo/v3/sassy/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v3/sassy/close_1.mp3",
+          "vo/v3/sassy/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v3/sassy/escapeOutran_1.mp3",
+          "vo/v3/sassy/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v3/sassy/escapeTired_1.mp3",
+          "vo/v3/sassy/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v3/sassy/bitten_1.mp3",
+          "vo/v3/sassy/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v3/sassy/overrun_1.mp3",
+          "vo/v3/sassy/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v3/sassy/km_1.mp3",
+          "vo/v3/sassy/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v3/sassy/finish_1.mp3",
+          "vo/v3/sassy/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v3/sassy/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v3/sassy/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v3/sassy/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v3/sassy/rankUp_1.mp3"
+        ]
+      },
+      "straight": {
+        "start": [
+          "vo/v3/straight/start_1.mp3",
+          "vo/v3/straight/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v3/straight/spawn_1.mp3",
+          "vo/v3/straight/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v3/straight/ambush_1.mp3",
+          "vo/v3/straight/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v3/straight/gap90_1.mp3",
+          "vo/v3/straight/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v3/straight/gap60_1.mp3",
+          "vo/v3/straight/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v3/straight/gap30_1.mp3",
+          "vo/v3/straight/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v3/straight/close_1.mp3",
+          "vo/v3/straight/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v3/straight/escapeOutran_1.mp3",
+          "vo/v3/straight/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v3/straight/escapeTired_1.mp3",
+          "vo/v3/straight/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v3/straight/bitten_1.mp3",
+          "vo/v3/straight/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v3/straight/overrun_1.mp3",
+          "vo/v3/straight/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v3/straight/km_1.mp3",
+          "vo/v3/straight/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v3/straight/finish_1.mp3",
+          "vo/v3/straight/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v3/straight/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v3/straight/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v3/straight/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v3/straight/rankUp_1.mp3"
+        ]
+      }
+    },
+    "v4": {
+      "sassy": {
+        "start": [
+          "vo/v4/sassy/start_1.mp3",
+          "vo/v4/sassy/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v4/sassy/spawn_1.mp3",
+          "vo/v4/sassy/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v4/sassy/ambush_1.mp3",
+          "vo/v4/sassy/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v4/sassy/gap90_1.mp3",
+          "vo/v4/sassy/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v4/sassy/gap60_1.mp3",
+          "vo/v4/sassy/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v4/sassy/gap30_1.mp3",
+          "vo/v4/sassy/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v4/sassy/close_1.mp3",
+          "vo/v4/sassy/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v4/sassy/escapeOutran_1.mp3",
+          "vo/v4/sassy/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v4/sassy/escapeTired_1.mp3",
+          "vo/v4/sassy/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v4/sassy/bitten_1.mp3",
+          "vo/v4/sassy/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v4/sassy/overrun_1.mp3",
+          "vo/v4/sassy/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v4/sassy/km_1.mp3",
+          "vo/v4/sassy/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v4/sassy/finish_1.mp3",
+          "vo/v4/sassy/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v4/sassy/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v4/sassy/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v4/sassy/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v4/sassy/rankUp_1.mp3"
+        ]
+      },
+      "straight": {
+        "start": [
+          "vo/v4/straight/start_1.mp3",
+          "vo/v4/straight/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v4/straight/spawn_1.mp3",
+          "vo/v4/straight/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v4/straight/ambush_1.mp3",
+          "vo/v4/straight/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v4/straight/gap90_1.mp3",
+          "vo/v4/straight/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v4/straight/gap60_1.mp3",
+          "vo/v4/straight/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v4/straight/gap30_1.mp3",
+          "vo/v4/straight/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v4/straight/close_1.mp3",
+          "vo/v4/straight/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v4/straight/escapeOutran_1.mp3",
+          "vo/v4/straight/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v4/straight/escapeTired_1.mp3",
+          "vo/v4/straight/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v4/straight/bitten_1.mp3",
+          "vo/v4/straight/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v4/straight/overrun_1.mp3",
+          "vo/v4/straight/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v4/straight/km_1.mp3",
+          "vo/v4/straight/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v4/straight/finish_1.mp3",
+          "vo/v4/straight/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v4/straight/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v4/straight/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v4/straight/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v4/straight/rankUp_1.mp3"
+        ]
+      }
+    },
+    "v5": {
+      "sassy": {
+        "start": [
+          "vo/v5/sassy/start_1.mp3",
+          "vo/v5/sassy/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v5/sassy/spawn_1.mp3",
+          "vo/v5/sassy/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v5/sassy/ambush_1.mp3",
+          "vo/v5/sassy/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v5/sassy/gap90_1.mp3",
+          "vo/v5/sassy/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v5/sassy/gap60_1.mp3",
+          "vo/v5/sassy/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v5/sassy/gap30_1.mp3",
+          "vo/v5/sassy/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v5/sassy/close_1.mp3",
+          "vo/v5/sassy/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v5/sassy/escapeOutran_1.mp3",
+          "vo/v5/sassy/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v5/sassy/escapeTired_1.mp3",
+          "vo/v5/sassy/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v5/sassy/bitten_1.mp3",
+          "vo/v5/sassy/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v5/sassy/overrun_1.mp3",
+          "vo/v5/sassy/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v5/sassy/km_1.mp3",
+          "vo/v5/sassy/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v5/sassy/finish_1.mp3",
+          "vo/v5/sassy/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v5/sassy/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v5/sassy/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v5/sassy/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v5/sassy/rankUp_1.mp3"
+        ]
+      },
+      "straight": {
+        "start": [
+          "vo/v5/straight/start_1.mp3",
+          "vo/v5/straight/start_2.mp3"
+        ],
+        "spawn": [
+          "vo/v5/straight/spawn_1.mp3",
+          "vo/v5/straight/spawn_2.mp3"
+        ],
+        "ambush": [
+          "vo/v5/straight/ambush_1.mp3",
+          "vo/v5/straight/ambush_2.mp3"
+        ],
+        "gap90": [
+          "vo/v5/straight/gap90_1.mp3",
+          "vo/v5/straight/gap90_2.mp3"
+        ],
+        "gap60": [
+          "vo/v5/straight/gap60_1.mp3",
+          "vo/v5/straight/gap60_2.mp3"
+        ],
+        "gap30": [
+          "vo/v5/straight/gap30_1.mp3",
+          "vo/v5/straight/gap30_2.mp3"
+        ],
+        "close": [
+          "vo/v5/straight/close_1.mp3",
+          "vo/v5/straight/close_2.mp3"
+        ],
+        "escapeOutran": [
+          "vo/v5/straight/escapeOutran_1.mp3",
+          "vo/v5/straight/escapeOutran_2.mp3"
+        ],
+        "escapeTired": [
+          "vo/v5/straight/escapeTired_1.mp3",
+          "vo/v5/straight/escapeTired_2.mp3"
+        ],
+        "bitten": [
+          "vo/v5/straight/bitten_1.mp3",
+          "vo/v5/straight/bitten_2.mp3"
+        ],
+        "overrun": [
+          "vo/v5/straight/overrun_1.mp3",
+          "vo/v5/straight/overrun_2.mp3"
+        ],
+        "km": [
+          "vo/v5/straight/km_1.mp3",
+          "vo/v5/straight/km_2.mp3"
+        ],
+        "finish": [
+          "vo/v5/straight/finish_1.mp3",
+          "vo/v5/straight/finish_2.mp3"
+        ],
+        "armorSave": [
+          "vo/v5/straight/armorSave_1.mp3"
+        ],
+        "flare": [
+          "vo/v5/straight/flare_1.mp3"
+        ],
+        "bait": [
+          "vo/v5/straight/bait_1.mp3"
+        ],
+        "rankUp": [
+          "vo/v5/straight/rankUp_1.mp3"
+        ]
+      }
+    }
+  },
+  "version": 2,
+  "voices": [
+    {
+      "id": "v1",
+      "label": "Voice 1",
+      "sample": "vo/v1/sassy/start_1.mp3"
+    },
+    {
+      "id": "v2",
+      "label": "Voice 2",
+      "sample": "vo/v2/sassy/start_1.mp3"
+    },
+    {
+      "id": "v3",
+      "label": "Voice 3",
+      "sample": "vo/v3/sassy/start_1.mp3"
+    },
+    {
+      "id": "v4",
+      "label": "Voice 4",
+      "sample": "vo/v4/sassy/start_1.mp3"
+    },
+    {
+      "id": "v5",
+      "label": "Voice 5",
+      "sample": "vo/v5/sassy/start_1.mp3"
+    }
+  ],
+  "tones": [
+    {
+      "id": "sassy",
+      "label": "Sassy"
+    },
+    {
+      "id": "straight",
+      "label": "Straight"
+    }
+  ]
 }

@@ -11,6 +11,36 @@ and you escape. Hordes tire and give up, ambushes force short sprints, three
 bites and you're overrun. Afterward you get a survival report with your route,
 close calls, and a copy-paste summary for Strava.
 
+## Narrator
+
+Pick from **5 voices** (tap ▶ on any of them to audition) and two tones:
+
+- **Sassy** — a deadpan operator who is not especially impressed.
+  *"They've given up. Slumped in the road, like my expectations. You're clear."*
+- **Straight** — a calm professional dispatcher, no jokes.
+  *"Contacts have stopped pursuing. You're clear."*
+
+All narration is pre-generated locally with OpenAudio S2 (see [tools/](tools/README.md)),
+so it works offline. Only the selected voice+tone is downloaded (~2.5 MB), and any
+line without a clip falls back to the phone's own speech synthesis.
+
+## Salvage & Loadout
+
+Every run earns **Salvage** — distance, hordes escaped, and close calls all pay;
+bites cost you. Spend it in the **Loadout** screen, and gear genuinely changes the
+chase:
+
+| Slot | What it does |
+|---|---|
+| 👟 **Boots** | Shake hordes off from further away |
+| 🧥 **Armor** | Absorbs bites — but you're bulkier, so hordes start closer |
+| 🔦 **Tools** | Flare (scares off a horde that's on you), Bait (first horde ignores you), Smoke (they tire faster) |
+| 🎒 **Cargo** | ⚠️ Risk/reward: Noisy Cans, Blood-soaked Loot and the Radio Beacon **attract** more hordes and ambushes — and pay out up to 2.2× |
+
+Lifetime distance raises your **rank** (Fresh Meat → Scavenger → Courier → Runner
+→ Legend), which unlocks the better tiers. A Radio Beacon run is genuinely
+harder and roughly doubles the payout — that's the trade.
+
 ## Try it locally
 
 Any static file server works, e.g.:

@@ -21,7 +21,10 @@ html, body {
   -webkit-text-size-adjust: 100%;
 }
 
-body { min-height: 100vh; min-height: 100dvh; }
+body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; }
+
+/* A long single-word runner name must wrap rather than push the page sideways. */
+.title h1, .rep-head { overflow-wrap: anywhere; }
 
 #app {
   max-width: 480px;
@@ -92,6 +95,72 @@ button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 #history .badge { font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 20px; }
 #history .badge.ok { background: rgba(95,191,107,.15); color: var(--green); }
 #history .badge.dead { background: rgba(239,83,80,.15); color: var(--red); }
+
+/* ---------- voice / tone pickers ---------- */
+.field-label { display: block; }
+.voicelist { display: flex; flex-direction: column; gap: 6px; }
+.voice-row {
+  display: flex; align-items: stretch; gap: 6px;
+}
+.voice-row button {
+  border: 1px solid #2c4033; border-radius: 10px; background: var(--panel2); color: var(--text);
+  font-size: 14px; font-weight: 700; min-height: 44px; flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 10px;
+}
+.voice-row.on button { background: var(--green-dark); color: #fff; border-color: var(--green); }
+.preview-btn {
+  flex: 0 0 auto !important; width: 44px; min-width: 44px;
+  font-size: 16px !important;
+}
+
+/* ---------- rank / salvage strip ---------- */
+.rank-strip { gap: 8px; }
+.rank-strip-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; }
+.rank-strip-top span:first-child { font-weight: 800; color: var(--text); letter-spacing: .5px; }
+#rank-salvage, #loadout-salvage { color: var(--amber); font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.bar-fill { height: 100%; width: 0%; background: var(--green); border-radius: 6px; transition: width .6s ease; }
+
+/* ---------- loadout screen ---------- */
+.loadout-head { padding: 4px 0 0; }
+.loadout-head h1 { font-size: 30px; font-weight: 900; color: var(--green); letter-spacing: 2px; }
+.loadout-head h1 small { font-size: 15px; color: var(--dim); letter-spacing: 4px; }
+
+#loadout-slots { display: flex; flex-direction: column; gap: 14px; }
+
+.slot {
+  background: var(--panel); border: 1px solid #223227; border-radius: var(--radius); padding: 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.slot h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--dim); }
+
+.gear {
+  display: flex; align-items: center; gap: 10px; min-height: 44px;
+  background: var(--panel2); border: 1px solid #2c4033; border-radius: 10px; padding: 8px 10px;
+}
+.gear .gear-icon { font-size: 22px; flex: 0 0 auto; }
+.gear .gear-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.gear .gear-label { font-size: 14px; font-weight: 700; color: var(--text); }
+.gear .gear-desc { font-size: 11px; color: var(--dim); line-height: 1.3; }
+.gear .cost { font-size: 12px; font-weight: 800; color: var(--amber); flex: 0 0 auto; white-space: nowrap; }
+.gear button { min-height: 44px; padding: 0 12px; border-radius: 8px; border: 1px solid #2c4033; background: var(--panel); color: var(--text); font-size: 12px; font-weight: 800; flex: 0 0 auto; }
+
+.gear.owned { border-color: var(--green); }
+.gear.equipped { background: rgba(95,191,107,.12); border-color: var(--green); box-shadow: 0 0 0 1px rgba(95,191,107,.25) inset; }
+.gear.equipped .gear-label::after { content: " ✓"; color: var(--green); }
+.gear.locked { opacity: .55; }
+.gear.locked .cost { color: var(--dim); }
+
+/* ---------- salvage breakdown (report) ---------- */
+.salvage-card { gap: 8px; }
+.salvage-card h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 2px; color: var(--dim); }
+.salvage-line { display: flex; justify-content: space-between; font-size: 14px; }
+.salvage-line .label { color: var(--dim); }
+.salvage-line .amount { font-weight: 700; font-variant-numeric: tabular-nums; }
+.salvage-total {
+  display: flex; justify-content: space-between; font-size: 18px; font-weight: 900;
+  border-top: 1px solid #223227; padding-top: 8px; margin-top: 2px; color: var(--amber);
+}
 
 /* ---------- run HUD ---------- */
 .hud-top { display: flex; gap: 8px; }

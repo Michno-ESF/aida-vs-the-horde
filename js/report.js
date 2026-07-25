@@ -1,4 +1,5 @@
 import { fmtTime, fmtPace, $ } from './ui.js';
+import { rankFor, nextRank } from './progression.js';
 
 export function buildSummary(game, name, difficulty) {
   const stride = Math.max(1, Math.floor(game.points.length / 300));
@@ -19,14 +20,18 @@ export function buildSummary(game, name, difficulty) {
     hearts: game.hearts,
     escapes: game.stats.escapes,
     bites: game.stats.bites,
-    closest: game.stats.closeCalls.reduce((m, c) => Math.min(m, c.gap), Infinity),
+    // null (not Infinity) for "never got close" — Infinity JSON-serialises to
+    // null anyway, so store the sentinel we actually mean.
+    closest: game.stats.closeCalls.length
+      ? game.stats.closeCalls.reduce((m, c) => Math.min(m, c.gap), Infinity)
+      : null,
     survived: game.hearts > 0,
     path,
     marks,
   };
 }
 
-export function renderReport(sum) {
+export function renderReport(sum, ctx = {}) {
   const head = $('rep-head');
   head.textContent = sum.survived
     ? `🏆 ${sum.name.toUpperCase()} SURVIVED`
@@ -39,24 +44,58 @@ export function renderReport(sum) {
     [fmtPace(sum.avgSpeed) + ' /km', 'avg pace'],
     ['❤️'.repeat(sum.hearts) + '🖤'.repeat(3 - sum.hearts), 'hearts left'],
     [String(sum.escapes), 'hordes escaped'],
-    [sum.closest === Infinity ? '—' : Math.round(sum.closest) + ' m', 'closest call'],
+    [Number.isFinite(sum.closest) ? Math.round(sum.closest) + ' m' : '—', 'closest call'],
   ];
   $('rep-stats').innerHTML = cells
     .map(([b, l]) => `<div class="cell"><b>${b}</b><span>${l}</span></div>`)
     .join('');
 
   drawMap($('rep-map'), sum);
+  renderSalvage(ctx.salvage);
+  renderRankNote(ctx.profile, ctx.rankUp);
+}
+
+// Salvage breakdown card. `salvage` is the { total, lines } shape from
+// progression.salvageFor(); hidden entirely if there's nothing to show.
+function renderSalvage(salvage) {
+  const el = $('rep-salvage');
+  if (!salvage || !salvage.lines.length) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  el.classList.remove('hidden');
+  const lines = salvage.lines
+    .map(l => `<div class="salvage-line"><span class="label">${l.label}</span><span class="amount">${l.amount >= 0 ? '+' : ''}${l.amount}</span></div>`)
+    .join('');
+  el.innerHTML = `<h2>Salvage</h2>${lines}<div class="salvage-total"><span>Total</span><span>+${salvage.total} ⚙️</span></div>`;
+}
+
+// Rank status/announcement. Shows a rank-up callout when one happened this
+// run, otherwise the current rank and progress toward the next one.
+function renderRankNote(profile, rankUp) {
+  const el = $('rep-rank');
+  if (!profile) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  el.classList.remove('hidden');
+  if (rankUp) {
+    el.innerHTML = `🎖️ Rank up — you're now <b>${rankUp.label}</b>.`;
+    return;
+  }
+  const nxt = nextRank(profile.totalKm);
+  el.textContent = nxt
+    ? `${rankFor(profile.totalKm).label} · ${nxt.remainingKm.toFixed(1)} km to ${nxt.label}`
+    : `${rankFor(profile.totalKm).label} — max rank reached.`;
 }
 
 function drawMap(canvas, sum) {
   // Size the backing store to the displayed CSS size × devicePixelRatio so the
   // route is crisp on a retina iPhone instead of an upscaled 660×440 blur.
   const dpr = Math.min(window.devicePixelRatio || 1, 3);
-  const W = canvas.clientWidth || 660;
+  // renderReport() runs while the report screen is still display:none, so
+  // clientWidth reads 0 here. Fall back to the parent's width, and never pin an
+  // inline pixel height — the CSS keeps height:auto so the 3:2 backing store
+  // scales uniformly instead of being squashed into a stale 440px box.
+  const W = canvas.clientWidth || canvas.parentElement?.clientWidth || 660;
   const H = Math.round(W * 2 / 3);              // keep the 3:2 aspect ratio
   canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
-  canvas.style.height = H + 'px';
+  canvas.style.removeProperty('height');
   const ctx = canvas.getContext('2d');
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);       // draw in CSS pixels
   const PAD = Math.round(W * 0.08);
@@ -126,7 +165,7 @@ export function summaryText(sum) {
     `🏃‍♀️ ${(sum.dist / 1000).toFixed(2)} km in ${fmtTime(sum.elapsed)} (${paceStr}/km)`,
     `🧟 Hordes escaped: ${sum.escapes}${sum.bites ? ` · Bitten: ${sum.bites}` : ''}`,
   ];
-  if (sum.closest !== Infinity) lines.push(`😱 Closest call: ${Math.round(sum.closest)} m`);
+  if (Number.isFinite(sum.closest)) lines.push(`😱 Closest call: ${Math.round(sum.closest)} m`);
   lines.push(`${'❤️'.repeat(sum.hearts)}${'🖤'.repeat(3 - sum.hearts)} — aida-vs-the-horde`);
   return lines.join('\n');
 }
